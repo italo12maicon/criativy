@@ -4,15 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SEUS CRIATIVOS BANNERS PROFISSIONAIS</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather Icons -->
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos extras para garantir a visualização correta sem arquivo CSS externo */
+        .feature-card {
+            background-color: rgba(31, 41, 55, 0.5); /* gray-800 com transparência */
+            border: 1px solid rgba(75, 85, 99, 0.4);
+            transition: transform 0.2s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(31, 41, 55, 0.8);
+        }
+        
+        /* Animação de pulso suave para a área de preço */
+        @keyframes border-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+        }
+        .pulse-animation {
+            animation: border-pulse 3s infinite;
+        }
+        
+        /* Remove as setas padrão do input number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
 </head>
-<body class="min-h-screen font-sans">
+
+<!-- Adicionado bg-gray-950 e text-white para garantir o fundo escuro -->
+<body class="min-h-screen font-sans bg-gray-950 text-white selection:bg-yellow-500 selection:text-black">
     <main class="container mx-auto px-4 py-12 max-w-4xl">
         <!-- Header Section -->
         <header class="text-center mb-16">
@@ -23,6 +57,7 @@
                 Designs premium que elevam sua marca e impulsionam seus resultados
             </p>
         </header>
+
         <!-- Pricing Calculator -->
         <section class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-lg overflow-hidden mb-12 transition-all duration-300 hover:shadow-xl border border-gray-700 pulse-animation">
             <div class="p-8 md:p-10">
@@ -33,17 +68,20 @@
                         <span class="font-medium text-yellow-400">R$ 4,99 cada</span>
                     </div>
                 </div>
+
                 <!-- Quantity Selector -->
                 <div class="mb-10">
                     <div class="flex items-center justify-center space-x-4 mb-8">
-                        <button id="decrement" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors border border-gray-600 hover:border-yellow-400">
+                        <button id="decrement" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors border border-gray-600 hover:border-yellow-400 cursor-pointer">
                             <i data-feather="minus"></i>
                         </button>
-                        <input type="number" id="quantity" value="1" min="1" class="w-24 text-center text-3xl font-bold focus:outline-none">
-                        <button id="increment" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors border border-gray-600 hover:border-yellow-400">
+                        <!-- Adicionado bg-transparent para o input não ficar branco -->
+                        <input type="number" id="quantity" value="1" min="1" class="w-24 bg-transparent text-white text-center text-3xl font-bold focus:outline-none">
+                        <button id="increment" class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-gray-700 transition-colors border border-gray-600 hover:border-yellow-400 cursor-pointer">
                             <i data-feather="plus"></i>
                         </button>
                     </div>
+
                     <!-- Price Breakdown -->
                     <div class="space-y-4">
                         <div class="flex justify-between py-3 border-b border-gray-700">
@@ -64,13 +102,15 @@
                         </div>
                     </div>
                 </div>
-<!-- CTA Button -->
+
+                <!-- CTA Button -->
                 <a id="whatsapp-link" href="https://wa.me/5574974008239?text=Olá! Quero comprar 1 criativos profissionais." target="_blank" class="block w-full py-4 px-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-bold text-lg rounded-lg text-center hover:from-yellow-600 hover:to-yellow-700 transition-all transform hover:scale-105 shadow-md">
                     COMPRAR AGORA
                     <i data-feather="arrow-right" class="inline ml-2"></i>
                 </a>
             </div>
         </section>
+
         <!-- Features -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             <div class="feature-card p-6 rounded-lg">
@@ -95,11 +135,63 @@
                 <p class="text-gray-300">Ajustes garantidos até você ficar 100% satisfeito.</p>
             </div>
         </section>
-</main>
+    </main>
 
-    <script src="script.js"></script>
+    <!-- Scripts de Funcionalidade -->
     <script>
+        // Inicializa os ícones
         feather.replace();
+
+        // Lógica da Calculadora
+        document.addEventListener('DOMContentLoaded', function() {
+            const pricePerUnit = 4.99;
+            const quantityInput = document.getElementById('quantity');
+            const incrementBtn = document.getElementById('increment');
+            const decrementBtn = document.getElementById('decrement');
+            const selectedQuantityEl = document.getElementById('selected-quantity');
+            const finalPriceEl = document.getElementById('final-price');
+            const whatsappLink = document.getElementById('whatsapp-link');
+
+            function updateValues() {
+                let qty = parseInt(quantityInput.value);
+                
+                // Garante que a quantidade mínima seja 1
+                if (isNaN(qty) || qty < 1) {
+                    qty = 1;
+                }
+                
+                quantityInput.value = qty;
+                selectedQuantityEl.innerText = qty;
+                
+                // Calcula total
+                let total = (qty * pricePerUnit).toFixed(2).replace('.', ',');
+                finalPriceEl.innerText = `R$ ${total}`;
+                
+                // Atualiza link do WhatsApp dinamicamente
+                const message = `Olá! Quero comprar ${qty} criativos profissionais.`;
+                // Codifica a mensagem para URL
+                const encodedMessage = encodeURIComponent(message);
+                whatsappLink.href = `https://wa.me/5574974008239?text=${encodedMessage}`;
+            }
+
+            // Event Listeners
+            incrementBtn.addEventListener('click', () => {
+                quantityInput.value = parseInt(quantityInput.value) + 1;
+                updateValues();
+            });
+
+            decrementBtn.addEventListener('click', () => {
+                if (quantityInput.value > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1;
+                    updateValues();
+                }
+            });
+
+            quantityInput.addEventListener('input', updateValues);
+            
+            // Inicializa valores
+            updateValues();
+        });
     </script>
 </body>
 </html>
